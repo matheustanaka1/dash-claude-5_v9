@@ -288,7 +288,22 @@ body{min-height:100vh;padding-bottom:80px;}
 .donut-compose-lbl{font-size:9px;color:var(--text3);font-family:var(--mono);
   margin-top:4px;text-transform:uppercase;letter-spacing:.1em;font-weight:600;}
 .donut-compose-legend{margin-top:14px;display:flex;flex-direction:column;gap:4px;width:100%;max-width:360px;}
-.dcl-item{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:8px;font-size:11px;font-family:var(--mono);color:var(--text2);}
+/* Legenda agrupada do donut */
+.dcl-group{margin-bottom:6px;}
+.dcl-group-hdr{display:grid;grid-template-columns:10px 1fr auto auto;align-items:center;gap:6px;
+  padding:4px 0 3px;border-bottom:1px solid var(--border);margin-bottom:2px;}
+.dcl-group-name{font-size:11px;font-weight:700;color:var(--text);font-family:var(--font);}
+.dcl-group-val{font-size:11px;font-weight:700;font-family:var(--mono);color:var(--text);min-width:60px;text-align:right;}
+.dcl-group-pct{font-size:11px;font-weight:700;font-family:var(--mono);color:var(--text3);min-width:38px;text-align:right;}
+.dcl-sub{display:grid;grid-template-columns:10px 1fr auto auto;align-items:center;gap:6px;
+  padding:2px 0 2px 12px;}
+.dcl-sub-name{font-size:10px;color:var(--text2);font-family:var(--font);}
+.dcl-sub-val{font-size:10px;font-family:var(--mono);color:var(--text2);min-width:60px;text-align:right;}
+.dcl-sub-pct{font-size:10px;font-family:var(--mono);color:var(--text3);min-width:38px;text-align:right;}
+.dcl-simple{display:grid;grid-template-columns:10px 1fr auto auto;align-items:center;gap:6px;padding:3px 0;}
+.dcl-simple-name{font-size:10px;color:var(--text2);}
+.dcl-simple-val{font-size:10px;font-family:var(--mono);color:var(--text2);min-width:60px;text-align:right;}
+.dcl-simple-pct{font-size:10px;font-family:var(--mono);color:var(--text3);min-width:38px;text-align:right;}
 .dcl-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0;}
 .dcl-val{font-weight:600;color:var(--text);text-align:right;}
 .dcl-pct{font-weight:500;color:var(--text3);text-align:right;min-width:42px;}
@@ -321,17 +336,17 @@ body{min-height:100vh;padding-bottom:80px;}
   cursor:pointer;transition:all .2s;}
 .tw-btn.on{background:var(--gdim);border-color:var(--gborder);color:var(--green);}
 .tw-scroll{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:11px;white-space:nowrap;}
-thead th{text-align:left;padding:9px 11px;border-bottom:1px solid var(--border);color:var(--text3);
-  font-weight:700;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mono);
+table{width:100%;border-collapse:collapse;font-size:10px;white-space:nowrap;}
+thead th{text-align:left;padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text3);
+  font-weight:700;font-size:8px;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mono);
   background:var(--bg3);}
 thead th.r{text-align:right;}
 thead th.delta-col{display:none;}
 table.show-deltas thead th.delta-col{display:table-cell;}
-tbody td{padding:9px 11px;border-bottom:1px solid var(--border);color:var(--text2);}
+tbody td{padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text2);}
 tbody td.r{text-align:right;font-family:var(--mono);font-weight:500;}
-tbody tr.day-row td{padding:7px 11px;background:var(--bg3);font-size:10px;color:var(--text3);}
-tbody tr.day-row td:first-child{padding-left:28px;}
+tbody tr.day-row td{padding:5px 8px;background:var(--bg3);font-size:9px;color:var(--text3);}
+tbody tr.day-row td:first-child{padding-left:22px;}
 tbody tr.day-row{display:none;}
 tbody tr.day-row.show{display:table-row;}
 tbody tr.week-summary{display:none;}
@@ -416,9 +431,9 @@ table.show-deltas tbody td.delta-col{display:table-cell;}
         <div class="hero-lbl">Receita bruta do dia</div>
         <div class="hero-val" id="h-total"><span>€</span>—</div>
         <div class="k-delta nt" id="h-total-d" style="margin-top:-4px;margin-bottom:8px;">—</div>
-        <div class="meta-status nt" id="h-meta-status">—</div>
       </div>
       <div class="hero-body-right">
+        <div class="meta-status nt" id="h-meta-status" style="text-align:center;padding-left:0;margin-bottom:6px;">—</div>
         <div class="hero-mini-donut">
           <canvas id="h-meta-donut"></canvas>
           <div class="hero-mini-donut-center">
@@ -427,10 +442,6 @@ table.show-deltas tbody td.delta-col{display:table-cell;}
           </div>
         </div>
       </div>
-    </div>
-    <div class="comp-row" style="margin-top:10px;">
-      <div class="comp-txt" id="comp-hist-txt">—</div>
-      <div class="comp-delta nt" id="comp-hist-delta">—</div>
     </div>
     <div class="hero-liq">
       <div class="hero-liq-lbl">Receita líquida</div>
@@ -446,11 +457,11 @@ table.show-deltas tbody td.delta-col{display:table-cell;}
     <div class="kitem"><div class="k-lbl">Fee / hora</div><div class="k-val" id="h-fh">—</div><div class="k-delta nt" id="h-fh-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Fee / pedido</div><div class="k-val" id="h-fp">—</div><div class="k-delta nt" id="h-fp-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Fee / km</div><div class="k-val" id="h-fkm">—</div><div class="k-delta nt" id="h-fkm-d">—</div></div>
-    <div class="kitem"><div class="k-lbl">Pedido / hora</div><div class="k-val" id="h-ph">—</div><div class="k-delta nt" id="h-ph-d">—</div></div>
+    <div class="kitem"><div class="k-lbl">Minutos / pedido</div><div class="k-val" id="h-mp">—</div><div class="k-delta nt" id="h-mp-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Km totais</div><div class="k-val" id="h-km">—</div><div class="k-delta nt" id="h-km-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Horas trabalhadas</div><div class="k-val" id="h-horas">—</div><div class="k-delta nt" id="h-horas-d">—</div></div>
-    <div class="kitem"><div class="k-lbl">Minutos / pedido</div><div class="k-val" id="h-mp">—</div><div class="k-delta nt" id="h-mp-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Pedidos</div><div class="k-val" id="h-orders">—</div><div class="k-delta nt" id="h-orders-d">—</div></div>
+    <div class="kitem"><div class="k-lbl">Pedido / hora</div><div class="k-val" id="h-ph">—</div><div class="k-delta nt" id="h-ph-d">—</div></div>
   </div>
 
   <div class="stitle">Composição da receita</div>
@@ -466,25 +477,6 @@ table.show-deltas tbody td.delta-col{display:table-cell;}
       </div>
       <div class="donut-compose-legend" id="d-compose-legend"></div>
       <div class="donut-alert" id="d-compose-alert">⚠ soma das partes diferente do total</div>
-    </div>
-  </div>
-
-  <div class="stitle">Receita por plataforma</div>
-  <div class="plat-grid">
-    <div class="plat">
-      <div class="plat-hdr"><div class="plat-dot del"></div><div class="plat-name">Deliveroo</div></div>
-      <div class="plat-total" id="h-del-tot">—</div>
-      <div class="plat-row"><span class="plat-lbl">Order fees</span><span class="plat-v money-del1" id="h-del-of">—</span></div>
-      <div class="plat-row"><span class="plat-lbl">Extra fees</span><span class="plat-v money-del2" id="h-del-ef">—</span></div>
-      <div class="plat-row"><span class="plat-lbl">Tips app</span><span class="plat-v money-del3" id="h-del-ta">—</span></div>
-      <div class="plat-row"><span class="plat-lbl">Pedidos</span><span class="plat-v neutral" id="h-del-ord">—</span></div>
-    </div>
-    <div class="plat">
-      <div class="plat-hdr"><div class="plat-dot ub"></div><div class="plat-name">Uber Eats</div></div>
-      <div class="plat-total" id="h-ub-tot">—</div>
-      <div class="plat-row"><span class="plat-lbl">Order fees</span><span class="plat-v money-uber1" id="h-ub-of">—</span></div>
-      <div class="plat-row"><span class="plat-lbl">Tips app</span><span class="plat-v money-uber2" id="h-ub-ta">—</span></div>
-      <div class="plat-row"><span class="plat-lbl">Pedidos</span><span class="plat-v neutral" id="h-ub-ord">—</span></div>
     </div>
   </div>
 
@@ -514,9 +506,9 @@ table.show-deltas tbody td.delta-col{display:table-cell;}
         <div class="hero-lbl">Receita bruta da semana</div>
         <div class="hero-val" id="w-sel-rec"><span>€</span>—</div>
         <div class="k-delta nt" id="w-sel-rec-d" style="margin-top:-4px;margin-bottom:8px;">—</div>
-        <div class="meta-status nt" id="w-meta-status">—</div>
       </div>
       <div class="hero-body-right">
+        <div class="meta-status nt" id="w-meta-status" style="text-align:center;padding-left:0;margin-bottom:6px;">—</div>
         <div class="hero-mini-donut">
           <canvas id="w-meta-donut"></canvas>
           <div class="hero-mini-donut-center">
@@ -540,11 +532,11 @@ table.show-deltas tbody td.delta-col{display:table-cell;}
     <div class="kitem"><div class="k-lbl">Fee / hora</div><div class="k-val" id="w-sel-fh">—</div><div class="k-delta nt" id="w-sel-fh-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Fee / pedido</div><div class="k-val" id="w-sel-fp">—</div><div class="k-delta nt" id="w-sel-fp-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Fee / km</div><div class="k-val" id="w-sel-fkm">—</div><div class="k-delta nt" id="w-sel-fkm-d">—</div></div>
-    <div class="kitem"><div class="k-lbl">Pedido / hora</div><div class="k-val" id="w-sel-ph">—</div><div class="k-delta nt" id="w-sel-ph-d">—</div></div>
+    <div class="kitem"><div class="k-lbl">Minutos / pedido</div><div class="k-val" id="w-sel-mp">—</div><div class="k-delta nt" id="w-sel-mp-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Km / dia (média)</div><div class="k-val" id="w-sel-km">—</div><div class="k-delta nt" id="w-sel-km-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Horas / dia (média)</div><div class="k-val" id="w-sel-h">—</div><div class="k-delta nt" id="w-sel-h-d">—</div></div>
-    <div class="kitem"><div class="k-lbl">Minutos / pedido</div><div class="k-val" id="w-sel-mp">—</div><div class="k-delta nt" id="w-sel-mp-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Pedidos / dia (média)</div><div class="k-val" id="w-sel-ord">—</div><div class="k-delta nt" id="w-sel-ord-d">—</div></div>
+    <div class="kitem"><div class="k-lbl">Pedido / hora</div><div class="k-val" id="w-sel-ph">—</div><div class="k-delta nt" id="w-sel-ph-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Dias trabalhados</div><div class="k-val" id="w-sel-dias">—</div><div class="k-delta nt" id="w-sel-dias-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Melhor dia</div><div class="k-val" id="w-sel-best" style="font-size:16px;">—</div><div class="k-delta nt" id="w-sel-best-d">—</div></div>
   </div>
@@ -554,25 +546,6 @@ table.show-deltas tbody td.delta-col{display:table-cell;}
     <div class="cc-hdr"><div><div class="cc-title">De onde veio a receita</div><div class="cc-sub">Proporção por plataforma e tipo · semana</div></div></div>
     <div class="donut-wrap"><div class="donut-canvas-wrap"><canvas id="w-compose"></canvas><div class="donut-center"><div class="donut-pct" id="w-compose-center">—</div><div class="donut-sub">total</div></div></div></div>
     <div class="donut-compose-legend" id="w-compose-legend"></div>
-  </div>
-
-  <div class="stitle">Receita por plataforma</div>
-  <div class="plat-grid">
-    <div class="plat-card">
-      <div class="plat-name"><span class="dot" style="background:var(--blue-del1)"></span>Deliveroo</div>
-      <div class="plat-total" id="w-del-total">—</div>
-      <div class="plat-row"><span>Order fees</span><span id="w-del-of">—</span></div>
-      <div class="plat-row"><span>Extra fees</span><span id="w-del-ef">—</span></div>
-      <div class="plat-row"><span>Tips app</span><span id="w-del-tips">—</span></div>
-      <div class="plat-row"><span>Pedidos</span><span id="w-del-ord">—</span></div>
-    </div>
-    <div class="plat-card">
-      <div class="plat-name"><span class="dot" style="background:var(--green-uber1)"></span>Uber Eats</div>
-      <div class="plat-total" id="w-uber-total">—</div>
-      <div class="plat-row"><span>Order fees</span><span id="w-uber-of">—</span></div>
-      <div class="plat-row"><span>Tips app</span><span id="w-uber-tips">—</span></div>
-      <div class="plat-row"><span>Pedidos</span><span id="w-uber-ord">—</span></div>
-    </div>
   </div>
 
   <div class="stitle">Descontos</div>
@@ -646,9 +619,9 @@ table.show-deltas tbody td.delta-col{display:table-cell;}
         <div class="hero-lbl">Receita bruta do mês</div>
         <div class="hero-val" id="m-rec"><span>€</span>—</div>
         <div class="k-delta nt" id="m-rec-d" style="margin-top:-4px;margin-bottom:8px;">—</div>
-        <div class="meta-status nt" id="m-meta-status">—</div>
       </div>
       <div class="hero-body-right">
+        <div class="meta-status nt" id="m-meta-status" style="text-align:center;padding-left:0;margin-bottom:6px;">—</div>
         <div class="hero-mini-donut">
           <canvas id="m-meta-donut"></canvas>
           <div class="hero-mini-donut-center">
@@ -672,11 +645,11 @@ table.show-deltas tbody td.delta-col{display:table-cell;}
     <div class="kitem"><div class="k-lbl">Fee / hora</div><div class="k-val" id="m-fh">—</div><div class="k-delta nt" id="m-fh-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Fee / pedido</div><div class="k-val" id="m-fp">—</div><div class="k-delta nt" id="m-fp-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Fee / km</div><div class="k-val" id="m-fkm">—</div><div class="k-delta nt" id="m-fkm-d">—</div></div>
-    <div class="kitem"><div class="k-lbl">Pedido / hora</div><div class="k-val" id="m-ph">—</div><div class="k-delta nt" id="m-ph-d">—</div></div>
+    <div class="kitem"><div class="k-lbl">Minutos / pedido</div><div class="k-val" id="m-mp">—</div><div class="k-delta nt" id="m-mp-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Km / dia (média)</div><div class="k-val" id="m-km">—</div><div class="k-delta nt" id="m-km-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Horas / dia (média)</div><div class="k-val" id="m-h">—</div><div class="k-delta nt" id="m-h-d">—</div></div>
-    <div class="kitem"><div class="k-lbl">Minutos / pedido</div><div class="k-val" id="m-mp">—</div><div class="k-delta nt" id="m-mp-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Pedidos / dia (média)</div><div class="k-val" id="m-ord">—</div><div class="k-delta nt" id="m-ord-d">—</div></div>
+    <div class="kitem"><div class="k-lbl">Pedido / hora</div><div class="k-val" id="m-ph">—</div><div class="k-delta nt" id="m-ph-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Dias trabalhados</div><div class="k-val" id="m-dias">—</div><div class="k-delta nt" id="m-dias-d">—</div></div>
     <div class="kitem"><div class="k-lbl">Melhor semana</div><div class="k-val" id="m-best" style="font-size:16px;">—</div><div class="k-delta nt" id="m-best-d">—</div></div>
   </div>
@@ -686,25 +659,6 @@ table.show-deltas tbody td.delta-col{display:table-cell;}
     <div class="cc-hdr"><div><div class="cc-title">De onde veio a receita</div><div class="cc-sub">Proporção por plataforma e tipo · mês</div></div></div>
     <div class="donut-wrap"><div class="donut-canvas-wrap"><canvas id="m-compose"></canvas><div class="donut-center"><div class="donut-pct" id="m-compose-center">—</div><div class="donut-sub">total</div></div></div></div>
     <div class="donut-compose-legend" id="m-compose-legend"></div>
-  </div>
-
-  <div class="stitle">Receita por plataforma</div>
-  <div class="plat-grid">
-    <div class="plat-card">
-      <div class="plat-name"><span class="dot" style="background:var(--blue-del1)"></span>Deliveroo</div>
-      <div class="plat-total" id="m-del-total">—</div>
-      <div class="plat-row"><span>Order fees</span><span id="m-del-of">—</span></div>
-      <div class="plat-row"><span>Extra fees</span><span id="m-del-ef">—</span></div>
-      <div class="plat-row"><span>Tips app</span><span id="m-del-tips">—</span></div>
-      <div class="plat-row"><span>Pedidos</span><span id="m-del-ord">—</span></div>
-    </div>
-    <div class="plat-card">
-      <div class="plat-name"><span class="dot" style="background:var(--green-uber1)"></span>Uber Eats</div>
-      <div class="plat-total" id="m-uber-total">—</div>
-      <div class="plat-row"><span>Order fees</span><span id="m-uber-of">—</span></div>
-      <div class="plat-row"><span>Tips app</span><span id="m-uber-tips">—</span></div>
-      <div class="plat-row"><span>Pedidos</span><span id="m-uber-ord">—</span></div>
-    </div>
   </div>
 
   <div class="stitle">Descontos</div>
@@ -778,11 +732,11 @@ table.show-deltas tbody td.delta-col{display:table-cell;}
     <div class="kitem"><div class="k-lbl">Fee / hora médio</div><div class="k-val" id="hi-fh">—</div></div>
     <div class="kitem"><div class="k-lbl">Fee / pedido médio</div><div class="k-val" id="hi-fp">—</div></div>
     <div class="kitem"><div class="k-lbl">Fee / km médio</div><div class="k-val" id="hi-fkm">—</div></div>
-    <div class="kitem"><div class="k-lbl">Pedido / hora médio</div><div class="k-val" id="hi-ph">—</div></div>
+    <div class="kitem"><div class="k-lbl">Minutos / pedido médio</div><div class="k-val" id="hi-mp">—</div></div>
     <div class="kitem"><div class="k-lbl">Km / dia (média)</div><div class="k-val" id="hi-km">—</div></div>
     <div class="kitem"><div class="k-lbl">Horas / dia (média)</div><div class="k-val" id="hi-h">—</div></div>
-    <div class="kitem"><div class="k-lbl">Minutos / pedido médio</div><div class="k-val" id="hi-mp">—</div></div>
     <div class="kitem"><div class="k-lbl">Pedidos / dia (média)</div><div class="k-val" id="hi-ord">—</div></div>
+    <div class="kitem"><div class="k-lbl">Pedido / hora médio</div><div class="k-val" id="hi-ph">—</div></div>
     <div class="kitem"><div class="k-lbl">Dias trabalhados</div><div class="k-val" id="hi-sem">—</div></div>
     <div class="kitem"><div class="k-lbl">Melhor semana</div><div class="k-val" id="hi-best" style="font-size:16px;">—</div></div>
   </div>
@@ -792,25 +746,6 @@ table.show-deltas tbody td.delta-col{display:table-cell;}
     <div class="cc-hdr"><div><div class="cc-title">De onde veio a receita</div><div class="cc-sub">Todo o período acumulado</div></div></div>
     <div class="donut-wrap"><div class="donut-canvas-wrap"><canvas id="hi-compose"></canvas><div class="donut-center"><div class="donut-pct" id="hi-compose-center">—</div><div class="donut-sub">total</div></div></div></div>
     <div class="donut-compose-legend" id="hi-compose-legend"></div>
-  </div>
-
-  <div class="stitle">Receita por plataforma</div>
-  <div class="plat-grid">
-    <div class="plat-card">
-      <div class="plat-name"><span class="dot" style="background:var(--blue-del1)"></span>Deliveroo</div>
-      <div class="plat-total" id="hi-del-total">—</div>
-      <div class="plat-row"><span>Order fees</span><span id="hi-del-of">—</span></div>
-      <div class="plat-row"><span>Extra fees</span><span id="hi-del-ef">—</span></div>
-      <div class="plat-row"><span>Tips app</span><span id="hi-del-tips">—</span></div>
-      <div class="plat-row"><span>Pedidos</span><span id="hi-del-ord">—</span></div>
-    </div>
-    <div class="plat-card">
-      <div class="plat-name"><span class="dot" style="background:var(--green-uber1)"></span>Uber Eats</div>
-      <div class="plat-total" id="hi-uber-total">—</div>
-      <div class="plat-row"><span>Order fees</span><span id="hi-uber-of">—</span></div>
-      <div class="plat-row"><span>Tips app</span><span id="hi-uber-tips">—</span></div>
-      <div class="plat-row"><span>Pedidos</span><span id="hi-uber-ord">—</span></div>
-    </div>
   </div>
 
   <div class="stitle">Descontos</div>
@@ -965,6 +900,14 @@ const bO={
   }
 };
 
+// Meta diária histórica: até 10/02/2025 era €90 flat; a partir de 11/02/2025 é variável por dia
+const META_CHANGE_DATE=new Date(2025,1,11); // 11 fevereiro 2025
+function getMetaDia(date){
+  if(!date) return 90;
+  const d=date instanceof Date?new Date(date):new Date(date);
+  return d<META_CHANGE_DATE?90:(META_DIA[d.getDay()]||90);
+}
+
 function pn(v){if(v===null||v===undefined||v===''||v==='-')return NaN;
   const n=parseFloat(String(v).replace(',','.'));return isNaN(n)?NaN:n;}
 function nn(v){return isNaN(v)||v===undefined?0:v;}
@@ -1064,11 +1007,15 @@ function showView(id,btn){
   document.getElementById('view-'+id).classList.add('on');
   btn.classList.add('on');
   if(gW.length){
-    if(id==='semana') renderSemana();
-    if(id==='mes') renderMes();
-    if(id==='hist') renderHistorico();
-    if(id==='diario') renderDiario();
-    window.scrollTo({top:0,behavior:'smooth'});
+    // requestAnimationFrame garante que o browser fez o reflow do display:none→block
+    // antes de Chart.js ler as dimensões dos canvas — resolve gráficos espremidos/incompletos
+    requestAnimationFrame(()=>{
+      if(id==='semana') renderSemana();
+      else if(id==='mes') renderMes();
+      else if(id==='hist') renderHistorico();
+      else if(id==='diario') renderDiario();
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
   }
 }
 
@@ -1307,7 +1254,7 @@ function renderDiario(){
   document.getElementById('h-weektag').textContent=wk?wk.label:'—';
 
   const total=hasData?nn(r.total):0;
-  const metaDia=META_DIA[dowIdx]||80;
+  const metaDia=getMetaDia(r?r.date:null);
   document.getElementById('h-total').innerHTML=`<span>€</span>${total.toFixed(2)}`;
 
   // Mini donut de atingimento + status
@@ -1346,22 +1293,21 @@ function renderDiario(){
   const histSameDay=gRaw.filter(d=>d.worked&&d.date.getDay()===dowIdx&&(d.dateKey||localDateKey(d.date))!==dateStr);
   const histTxt=document.getElementById('comp-hist-txt');
   const histDelta=document.getElementById('comp-hist-delta');
-  if(histSameDay.length>0){
+  if(histTxt&&histSameDay.length>0){
     const avg=histSameDay.reduce((s,d)=>s+nn(d.total),0)/histSameDay.length;
     histTxt.innerHTML=`<b>Média histórica: €${avg.toFixed(0)}</b> · ${DNs_FULL[dowIdx]}s (${histSameDay.length} dias)`;
-    if(total>0){
+    if(total>0&&histDelta){
       const diff2=total-avg;
       const pct2=(diff2/avg*100).toFixed(0);
       histDelta.textContent=(diff2>=0?'+':'-')+`€${Math.abs(diff2).toFixed(0)} (${diff2>=0?'+':''}${pct2}%)`;
       histDelta.className='comp-delta '+(diff2>=0?'up':'dn');
-    } else {
+    } else if(histDelta){
       histDelta.textContent='sem dados';
       histDelta.className='comp-delta nt';
     }
-  } else {
+  } else if(histTxt){
     histTxt.innerHTML=`Ainda sem histórico para ${DNs_FULL[dowIdx]}s`;
-    histDelta.textContent='—';
-    histDelta.className='comp-delta nt';
+    if(histDelta){histDelta.textContent='—';histDelta.className='comp-delta nt';}
   }
 
   // KPIs
@@ -1399,25 +1345,13 @@ function renderDiario(){
   setKpi('h-mp','h-mp-d',mp,mpv,v=>isNaN(v)?'—':v.toFixed(1)+' min');
   // Pedidos
   setKpi('h-orders','h-orders-d',hasData?r.orders:NaN,pv('orders'),v=>isNaN(v)?'—':Math.round(v)+'');
+  if(hasData&&r.orders>0){
+    const dOrd=nn(r.delOrd); const uOrd=nn(r.uberOrd);
+    if(dOrd>0||uOrd>0) addKitemSub(document.getElementById('h-orders'),`Del: ${Math.round(dOrd)} · Uber: ${Math.round(uOrd)}`);
+  }
 
   // Donut composição da receita
   renderDiarioCompose(r, hasData, total);
-
-  // Breakdown plataformas
-  if(hasData){
-    document.getElementById('h-del-tot').textContent=fe(r.delTotal);
-    document.getElementById('h-del-of').textContent=fe(r.delOF);
-    document.getElementById('h-del-ef').textContent=fe(r.delEF);
-    document.getElementById('h-del-ta').textContent=fe(r.delTips);
-    document.getElementById('h-del-ord').textContent=isNaN(r.delOrd)?'—':Math.round(r.delOrd)+'';
-    document.getElementById('h-ub-tot').textContent=fe(r.uberTotal);
-    document.getElementById('h-ub-of').textContent=fe(r.uberOF);
-    document.getElementById('h-ub-ta').textContent=fe(r.uberTips);
-    document.getElementById('h-ub-ord').textContent=isNaN(r.uberOrd)?'—':Math.round(r.uberOrd)+'';
-  } else {
-    ['h-del-tot','h-del-of','h-del-ef','h-del-ta','h-del-ord',
-     'h-ub-tot','h-ub-of','h-ub-ta','h-ub-ord'].forEach(id=>{document.getElementById(id).textContent='—';});
-  }
 
   // Líquido + descontos (com subtotal)
   document.getElementById('h-liq').textContent=hasData?fes(r.liquido):'—';
@@ -1479,25 +1413,32 @@ function renderDiarioCompose(r, hasData, total){
 
   valEl.textContent='€'+total.toFixed(2);
 
-  // Legend 3 colunas: label | € | %
-  legEl.innerHTML='';
-  parts.forEach(p=>{
-    const pct=(p.val/total*100).toFixed(1);
-    const it=document.createElement('div');
-    it.className='dcl-item';
-    it.innerHTML=`<div class="dcl-dot" style="background:${p.color}"></div>
-      <span>${p.lbl}</span>
-      <span class="dcl-val">€${p.val.toFixed(2)}</span>
-      <span class="dcl-pct">${pct}%</span>`;
-    legEl.appendChild(it);
-  });
+  // Legenda agrupada por plataforma
+  const delTotal=nn(r.delOF)+nn(r.delEF)+nn(r.delTips);
+  const uberTotal=nn(r.uberOF)+nn(r.uberTips);
+  buildGroupedLegend(legEl,
+    [
+      {name:'Deliveroo', color:C.blueDel1, total:delTotal, subs:[
+        {lbl:'Order fee', val:nn(r.delOF), color:C.blueDel1},
+        {lbl:'Extra fee', val:nn(r.delEF), color:C.blueDel2},
+        {lbl:'Tips app',  val:nn(r.delTips), color:C.blueDel3},
+      ]},
+      {name:'Uber Eats', color:C.greenUber1, total:uberTotal, subs:[
+        {lbl:'Order fee', val:nn(r.uberOF),   color:C.greenUber1},
+        {lbl:'Tips app',  val:nn(r.uberTips), color:C.greenUber2},
+      ]},
+    ],
+    [{lbl:'Tips cash', val:nn(r.tipscash), color:GRAY_MED}],
+    total
+  );
 
-  // Alert se diferença > €0.01
-  if(diff>0.01){
-    alertEl.textContent=`⚠ Soma (€${sumParts.toFixed(2)}) ≠ total (€${total.toFixed(2)}) · diff €${diff.toFixed(2)}`;
-    alertEl.classList.add('on');
-  } else {
-    alertEl.classList.remove('on');
+  if(alertEl){
+    if(diff>0.01){
+      alertEl.textContent=`⚠ Soma (€${sumParts.toFixed(2)}) ≠ total (€${total.toFixed(2)}) · diff €${diff.toFixed(2)}`;
+      alertEl.classList.add('on');
+    } else {
+      alertEl.classList.remove('on');
+    }
   }
 
   mkChart('d-compose',{type:'doughnut',
@@ -1580,19 +1521,64 @@ function renderMiniDonut(canvasId, pct){
       plugins:{legend:{display:false},tooltip:{enabled:false}}}
   });
 }
-function renderComposeDonut(chartId, legId, centerId, parts, total){
+// ─── Helper: legenda agrupada por plataforma ──────────────────────────────────
+// groups = [{name, color, total, subs:[{lbl,val,color}]}, ...]
+// simples = [{lbl,val,color}]  ← itens sem grupo (ex: tips cash)
+// grandTotal = total geral (para % de tudo)
+function buildGroupedLegend(legEl, groups, simples, grandTotal){
+  if(!legEl) return;
+  legEl.innerHTML='';
+  const pct=(v)=>grandTotal>0?(v/grandTotal*100).toFixed(0)+'%':'—';
+  const fv=(v)=>v>0?'€'+v.toFixed(2):'—';
+  const dot=(color)=>`<div style="width:8px;height:8px;border-radius:50%;background:${color};flex-shrink:0;"></div>`;
+
+  groups.forEach(g=>{
+    if(g.total<=0) return;
+    const grp=document.createElement('div');
+    grp.className='dcl-group';
+    // Linha de destaque
+    let hdr=document.createElement('div');
+    hdr.className='dcl-group-hdr';
+    hdr.innerHTML=`${dot(g.color)}<span class="dcl-group-name">${g.name}</span><span class="dcl-group-val">${fv(g.total)}</span><span class="dcl-group-pct">${pct(g.total)}</span>`;
+    grp.appendChild(hdr);
+    // Subitems
+    g.subs.filter(s=>s.val>0).forEach(s=>{
+      const sub=document.createElement('div');
+      sub.className='dcl-sub';
+      sub.innerHTML=`${dot(s.color)}<span class="dcl-sub-name">${s.lbl}</span><span class="dcl-sub-val">${fv(s.val)}</span><span class="dcl-sub-pct">${pct(s.val)}</span>`;
+      grp.appendChild(sub);
+    });
+    legEl.appendChild(grp);
+  });
+
+  // Itens simples (tips cash etc.)
+  simples.filter(s=>s.val>0).forEach(s=>{
+    const row=document.createElement('div');
+    row.className='dcl-simple';
+    row.innerHTML=`${dot(s.color)}<span class="dcl-simple-name">${s.lbl}</span><span class="dcl-simple-val">${fv(s.val)}</span><span class="dcl-simple-pct">${pct(s.val)}</span>`;
+    legEl.appendChild(row);
+  });
+}
+
+function renderComposeDonut(chartId, legId, centerId, parts, total, groups, simples){
   const legEl=document.getElementById(legId);
   const centerEl=document.getElementById(centerId);
   if(centerEl) centerEl.textContent='€'+Math.round(total);
   if(legEl){
-    legEl.innerHTML='';
-    parts.forEach(p=>{
-      const pct=(p.val/total*100).toFixed(1);
-      const it=document.createElement('div');
-      it.className='dcl-item';
-      it.innerHTML=`<div class="dcl-dot" style="background:${p.color}"></div><span>${p.lbl}</span><span class="dcl-val">€${p.val.toFixed(2)}</span><span class="dcl-pct">${pct}%</span>`;
-      legEl.appendChild(it);
-    });
+    if(groups){
+      // Legenda agrupada
+      buildGroupedLegend(legEl, groups, simples||[], total);
+    } else {
+      // Legenda flat (fallback)
+      legEl.innerHTML='';
+      parts.forEach(p=>{
+        const pct=(p.val/total*100).toFixed(1);
+        const it=document.createElement('div');
+        it.className='dcl-item';
+        it.innerHTML=`<div class="dcl-dot" style="background:${p.color}"></div><span>${p.lbl}</span><span class="dcl-val">€${p.val.toFixed(2)}</span><span class="dcl-pct">${pct}%</span>`;
+        legEl.appendChild(it);
+      });
+    }
   }
   mkChart(chartId,{type:'doughnut',
     data:{labels:parts.map(p=>p.lbl),datasets:[{data:parts.map(p=>p.val),backgroundColor:parts.map(p=>p.color),borderWidth:0}]},
@@ -1634,16 +1620,18 @@ function renderDeducts(containerId, bike, rentDel, rentUber, tipscash, liquido, 
 
 // ─── Helper: renderiza gráfico de tips empilhado + linha % ──────────────────
 function renderTipsChart(chartId, labels, delTipsArr, uberTipsArr, cashArr, totalArr){
-  const tipsTotal=labels.map((_,i)=>parseFloat((delTipsArr[i]+uberTipsArr[i]+cashArr[i]).toFixed(2)));
+  const isFuture=(i)=>totalArr[i]===null;
+  const tipsTotal=labels.map((_,i)=>isFuture(i)?null:parseFloat(((delTipsArr[i]||0)+(uberTipsArr[i]||0)+(cashArr[i]||0)).toFixed(2)));
   const pcts=labels.map((_,i)=>{
-    const t=delTipsArr[i]+uberTipsArr[i]+cashArr[i];
+    if(isFuture(i)) return null;
+    const t=(delTipsArr[i]||0)+(uberTipsArr[i]||0)+(cashArr[i]||0);
     return totalArr[i]>0?parseFloat((t/totalArr[i]*100).toFixed(1)):0;
   });
   mkChart(chartId,{type:'bar',
     data:{labels,datasets:[
-      {label:'Tips Deliveroo',data:delTipsArr.map(v=>parseFloat(v.toFixed(2))),backgroundColor:C.blueDel3+'cc',borderColor:C.blueDel3,borderWidth:1,stack:'tips',order:2},
-      {label:'Tips Uber',data:uberTipsArr.map(v=>parseFloat(v.toFixed(2))),backgroundColor:C.greenUber2+'cc',borderColor:C.greenUber2,borderWidth:1,stack:'tips',order:2},
-      {label:'Tips cash',data:cashArr.map(v=>parseFloat(v.toFixed(2))),backgroundColor:GRAY_MED+'cc',borderColor:GRAY_MED,borderWidth:1,stack:'tips',order:2},
+      {label:'Tips Deliveroo',data:delTipsArr.map(v=>v===null?null:parseFloat((v||0).toFixed(2))),backgroundColor:C.blueDel3+'cc',borderColor:C.blueDel3,borderWidth:1,stack:'tips',order:2},
+      {label:'Tips Uber',data:uberTipsArr.map(v=>v===null?null:parseFloat((v||0).toFixed(2))),backgroundColor:C.greenUber2+'cc',borderColor:C.greenUber2,borderWidth:1,stack:'tips',order:2},
+      {label:'Tips cash',data:cashArr.map(v=>v===null?null:parseFloat((v||0).toFixed(2))),backgroundColor:GRAY_MED+'cc',borderColor:GRAY_MED,borderWidth:1,stack:'tips',order:2},
       {type:'line',label:'% da receita',data:pcts,
         borderColor:C.amber,backgroundColor:'transparent',
         borderWidth:2,borderDash:[4,3],pointRadius:3,pointBackgroundColor:C.amber,
@@ -1762,7 +1750,16 @@ function renderSemana(){
   const wOrdAvg=curr.dias>0&&curr.orders>0?curr.orders/curr.dias:NaN;
   const wOrdAvgP=prev&&prev.dias>0&&prev.orders>0?prev.orders/prev.dias:NaN;
   setK('w-sel-ord','w-sel-ord-d',wOrdAvg,wOrdAvgP,v=>isNaN(v)||v===0?'—':v.toFixed(1)+'/dia');
-  if(curr.orders>0) addKitemSub(document.getElementById('w-sel-ord'),'total: '+Math.round(curr.orders)+' ped');
+  if(curr.orders>0){
+    const wDelOrdTot=nn(curr.delOrd); const wUberOrdTot=nn(curr.uberOrd);
+    addKitemSub(document.getElementById('w-sel-ord'),'total: '+Math.round(curr.orders)+' ped');
+    if(wDelOrdTot>0||wUberOrdTot>0){
+      const subEl2=document.createElement('div');
+      subEl2.style.cssText='font-size:10px;color:var(--text3);margin-top:2px;font-family:var(--mono)';
+      subEl2.textContent=`Del: ${Math.round(wDelOrdTot)} · Uber: ${Math.round(wUberOrdTot)}`;
+      document.getElementById('w-sel-ord').parentElement.appendChild(subEl2);
+    }
+  }
   setK('w-sel-dias','w-sel-dias-d',curr.dias,pv('dias'),v=>v+' dias');
 
   // Melhor dia
@@ -1807,7 +1804,7 @@ function renderSemana(){
     return parseFloat(acc.toFixed(2));
   });
   let accMeta=0;
-  const metaData=dowOrder.map(dow=>{accMeta+=META_DIA[dow]||80;return accMeta;});
+  const metaData=weekDays.map(d=>{accMeta+=getMetaDia(d);return accMeta;});
 
   mkChart('w-proj-chart',{type:'line',
     data:{labels:dayLabels,datasets:[
@@ -1844,10 +1841,7 @@ function renderSemana(){
     const r=gRaw.find(x=>{const xd=new Date(x.date);xd.setHours(0,0,0,0);return xd.getTime()===d.getTime()&&x.worked;});
     return r?r.total:0;
   });
-  const colors=currWeekData.map((v,i)=>{
-    const dow=dowOrder[i];const meta=META_DIA[dow]||80;
-    return barColorBinary(v,meta);
-  });
+  const colors=currWeekData.map((v,i)=>barColorBinary(v,getMetaDia(weekDays[i])));
 
   mkChart('w-hist-chart',{type:'bar',
     data:{labels:dayLabels,datasets:[
@@ -1890,22 +1884,24 @@ function renderSemana(){
   const custoSemAtual=Math.abs(nn(curr.bike))+Math.abs(nn(curr.rentDel))+Math.abs(nn(curr.rentUber));
   const custoFixoDiario=(custoSemAtual>0?custoSemAtual:avgCustoSem)/7;
   const fhBrutoDia=weekDays.map(d=>{
+    if(d>today) return null;
     const r=gRaw.find(x=>{const xd=new Date(x.date);xd.setHours(0,0,0,0);return xd.getTime()===d.getTime();});
     if(!r||!r.worked||!r.horas||r.horas===0) return 0;
     return parseFloat((r.total/r.horas).toFixed(2));
   });
   const fhLiqDia=weekDays.map(d=>{
+    if(d>today) return null;
     const r=gRaw.find(x=>{const xd=new Date(x.date);xd.setHours(0,0,0,0);return xd.getTime()===d.getTime();});
     if(!r||!r.worked||!r.horas||r.horas===0){
       return custoFixoDiario>0?parseFloat((-custoFixoDiario).toFixed(2)):null;
     }
-    // líquido = (receita - descontos_dia) / horas — nunca maior que bruto
     const descDia=Math.abs(nn(r.bike))+Math.abs(nn(r.rentDel))+Math.abs(nn(r.rentUber));
     return parseFloat(((r.total-descDia)/r.horas).toFixed(2));
   });
 
   // Horas por dia para eixo secundário
   const horasDia=weekDays.map(d=>{
+    if(d>today) return null;
     const r=gRaw.find(x=>{const xd=new Date(x.date);xd.setHours(0,0,0,0);return xd.getTime()===d.getTime();});
     return (r&&r.worked&&r.horas>0)?parseFloat(r.horas.toFixed(1)):0;
   });
@@ -1961,18 +1957,36 @@ function renderSemana(){
     {lbl:'Uber tips',val:nn(curr.uberTips),color:C.greenUber2},
     {lbl:'Tips cash',val:nn(curr.tipscash),color:GRAY_MED},
   ].filter(p=>p.val>0);
-  if(wTotal>0) renderComposeDonut('w-compose','w-compose-legend','w-compose-center',wParts,wTotal);
+  const wDelTot=nn(curr.delOF)+nn(curr.delEF)+nn(curr.delTips);
+  const wUberTot=nn(curr.uberOF)+nn(curr.uberTips);
+  const wGroups=[
+    {name:'Deliveroo',color:C.blueDel1,total:wDelTot,subs:[
+      {lbl:'Order fee',val:nn(curr.delOF),color:C.blueDel1},
+      {lbl:'Extra fee',val:nn(curr.delEF),color:C.blueDel2},
+      {lbl:'Tips app', val:nn(curr.delTips),color:C.blueDel3},
+    ]},
+    {name:'Uber Eats',color:C.greenUber1,total:wUberTot,subs:[
+      {lbl:'Order fee',val:nn(curr.uberOF),color:C.greenUber1},
+      {lbl:'Tips app', val:nn(curr.uberTips),color:C.greenUber2},
+    ]},
+  ];
+  if(wTotal>0) renderComposeDonut('w-compose','w-compose-legend','w-compose-center',wParts,wTotal,wGroups,[{lbl:'Tips cash',val:nn(curr.tipscash),color:GRAY_MED}]);
 
   // Breakdown por plataforma
   const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
   const wPlatTotal=nn(curr.delivRev)+nn(curr.uberRev);
   const wDelPct=wPlatTotal>0?(nn(curr.delivRev)/wPlatTotal*100).toFixed(0):'—';
   const wUberPct=wPlatTotal>0?(nn(curr.uberRev)/wPlatTotal*100).toFixed(0):'—';
-  s('w-del-total',fe(nn(curr.delivRev))+(wPlatTotal>0?' · '+wDelPct+'%':''));
-  s('w-del-of',fe(nn(curr.delOF)));s('w-del-ef',fe(nn(curr.delEF)));
-  s('w-del-tips',fe(nn(curr.delTips)));s('w-del-ord',Math.round(nn(curr.delOrd))+'');
-  s('w-uber-total',fe(nn(curr.uberRev))+(wPlatTotal>0?' · '+wUberPct+'%':''));
-  s('w-uber-of',fe(nn(curr.uberOF)));s('w-uber-tips',fe(nn(curr.uberTips)));
+  const wDel=nn(curr.delivRev); const wUber=nn(curr.uberRev);
+  const wpOf=(v,base)=>base>0?' · '+(v/base*100).toFixed(0)+'%':'';
+  s('w-del-total',fe(wDel)+(wPlatTotal>0?' · '+wDelPct+'%':''));
+  s('w-del-of',fe(nn(curr.delOF))+wpOf(nn(curr.delOF),wDel));
+  s('w-del-ef',fe(nn(curr.delEF))+wpOf(nn(curr.delEF),wDel));
+  s('w-del-tips',fe(nn(curr.delTips))+wpOf(nn(curr.delTips),wDel));
+  s('w-del-ord',Math.round(nn(curr.delOrd))+'');
+  s('w-uber-total',fe(wUber)+(wPlatTotal>0?' · '+wUberPct+'%':''));
+  s('w-uber-of',fe(nn(curr.uberOF))+wpOf(nn(curr.uberOF),wUber));
+  s('w-uber-tips',fe(nn(curr.uberTips))+wpOf(nn(curr.uberTips),wUber));
   s('w-uber-ord',Math.round(nn(curr.uberOrd))+'');
 
   // Descontos e liquido
@@ -1980,10 +1994,10 @@ function renderSemana(){
   s('w-liq-hero',fe(nn(curr.liquido)));
 
   // Tips por dia da semana
-  const wDelTips=weekDays.map(d=>{const r=gRaw.find(x=>{const xd=new Date(x.date);xd.setHours(0,0,0,0);return xd.getTime()===d.getTime()&&x.worked;});return r?nn(r.delTips):0;});
-  const wUberTips=weekDays.map(d=>{const r=gRaw.find(x=>{const xd=new Date(x.date);xd.setHours(0,0,0,0);return xd.getTime()===d.getTime()&&x.worked;});return r?nn(r.uberTips):0;});
-  const wCashTips=weekDays.map(d=>{const r=gRaw.find(x=>{const xd=new Date(x.date);xd.setHours(0,0,0,0);return xd.getTime()===d.getTime()&&x.worked;});return r?nn(r.tipscash):0;});
-  const wDayTotals=weekDays.map(d=>{const r=gRaw.find(x=>{const xd=new Date(x.date);xd.setHours(0,0,0,0);return xd.getTime()===d.getTime()&&x.worked;});return r?nn(r.total):0;});
+  const wDelTips=weekDays.map(d=>{if(d>today)return null;const r=gRaw.find(x=>{const xd=new Date(x.date);xd.setHours(0,0,0,0);return xd.getTime()===d.getTime()&&x.worked;});return r?nn(r.delTips):0;});
+  const wUberTips=weekDays.map(d=>{if(d>today)return null;const r=gRaw.find(x=>{const xd=new Date(x.date);xd.setHours(0,0,0,0);return xd.getTime()===d.getTime()&&x.worked;});return r?nn(r.uberTips):0;});
+  const wCashTips=weekDays.map(d=>{if(d>today)return null;const r=gRaw.find(x=>{const xd=new Date(x.date);xd.setHours(0,0,0,0);return xd.getTime()===d.getTime()&&x.worked;});return r?nn(r.tipscash):0;});
+  const wDayTotals=weekDays.map(d=>{if(d>today)return null;const r=gRaw.find(x=>{const xd=new Date(x.date);xd.setHours(0,0,0,0);return xd.getTime()===d.getTime()&&x.worked;});return r?nn(r.total):0;});
   renderTipsChart('w-tips-chart',dayLabels,wDelTips,wUberTips,wCashTips,wDayTotals);
 }
 
@@ -2010,6 +2024,8 @@ function renderMes(){
   const mH=mData.reduce((s,r)=>s+nn(r.horas),0);
   const mKm=mData.reduce((s,r)=>s+nn(r.km),0);
   const mOrd=mData.reduce((s,r)=>s+nn(r.orders),0);
+  const mDelOrd=mData.reduce((s,r)=>s+nn(r.delOrd),0);
+  const mUberOrd=mData.reduce((s,r)=>s+nn(r.uberOrd),0);
   const mDias=mData.length;
   const mFh=mH>0?mRec/mH:NaN;
   const mFp=mOrd>0?mRec/mOrd:NaN;
@@ -2099,7 +2115,15 @@ function renderMes(){
   const mOrdAvg=mDias>0&&mOrd>0?mOrd/mDias:NaN;
   const pOrdAvg=pDias>0&&pOrd>0?pOrd/pDias:NaN;
   setK('m-ord','m-ord-d',mOrdAvg,pOrdAvg,v=>isNaN(v)||v===0?'—':v.toFixed(1)+'/dia');
-  if(mOrd>0) addKitemSub(document.getElementById('m-ord'),'total: '+Math.round(mOrd)+' ped');
+  if(mOrd>0){
+    addKitemSub(document.getElementById('m-ord'),'total: '+Math.round(mOrd)+' ped');
+    if(mDelOrd>0||mUberOrd>0){
+      const subEl2=document.createElement('div');
+      subEl2.style.cssText='font-size:10px;color:var(--text3);margin-top:2px;font-family:var(--mono)';
+      subEl2.textContent=`Del: ${Math.round(mDelOrd)} · Uber: ${Math.round(mUberOrd)}`;
+      document.getElementById('m-ord').parentElement.appendChild(subEl2);
+    }
+  }
   setK('m-dias','m-dias-d',mDias,pDias,v=>v+' dias');
 
   // Melhor semana
@@ -2364,8 +2388,7 @@ function renderMes(){
   // mCashTips já definido acima
   const mDelTotal=mData.reduce((s,r)=>s+nn(r.delTotal),0);
   const mUberTotal=mData.reduce((s,r)=>s+nn(r.uberTotal),0);
-  const mDelOrd=mData.reduce((s,r)=>s+nn(r.delOrd),0);
-  const mUberOrd=mData.reduce((s,r)=>s+nn(r.uberOrd),0);
+  // mDelOrd, mUberOrd já definidos no início de renderMes
   // mBike, mRentDel, mRentUber já definidos no início de renderMes
 
   const mParts=[
@@ -2376,19 +2399,34 @@ function renderMes(){
     {lbl:'Uber tips',val:mUberTips,color:C.greenUber2},
     {lbl:'Tips cash',val:mCashTips,color:GRAY_MED},
   ].filter(p=>p.val>0);
-  if(mTotalComp>0) renderComposeDonut('m-compose','m-compose-legend','m-compose-center',mParts,mTotalComp);
+  const mGroups=[
+    {name:'Deliveroo',color:C.blueDel1,total:mDelOF+mDelEF+mDelTips,subs:[
+      {lbl:'Order fee',val:mDelOF,  color:C.blueDel1},
+      {lbl:'Extra fee',val:mDelEF,  color:C.blueDel2},
+      {lbl:'Tips app', val:mDelTips,color:C.blueDel3},
+    ]},
+    {name:'Uber Eats',color:C.greenUber1,total:mUberOF+mUberTips,subs:[
+      {lbl:'Order fee',val:mUberOF,  color:C.greenUber1},
+      {lbl:'Tips app', val:mUberTips,color:C.greenUber2},
+    ]},
+  ];
+  if(mTotalComp>0) renderComposeDonut('m-compose','m-compose-legend','m-compose-center',mParts,mTotalComp,mGroups,[{lbl:'Tips cash',val:mCashTips,color:GRAY_MED}]);
 
   // Breakdown por plataforma
   const sm=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
   const mPlatTotal=mDelTotal+mUberTotal;
   const mDelPct=mPlatTotal>0?(mDelTotal/mPlatTotal*100).toFixed(0):'—';
   const mUberPct=mPlatTotal>0?(mUberTotal/mPlatTotal*100).toFixed(0):'—';
+  const mpOf=(v,base)=>base>0?' · '+(v/base*100).toFixed(0)+'%':'';
   sm('m-del-total',fe(mDelTotal)+(mPlatTotal>0?' · '+mDelPct+'%':''));
-  sm('m-del-of',fe(mDelOF));sm('m-del-ef',fe(mDelEF));
-  sm('m-del-tips',fe(mDelTips));sm('m-del-ord',Math.round(mDelOrd)+'');
+  sm('m-del-of',fe(mDelOF)+mpOf(mDelOF,mDelTotal));
+  sm('m-del-ef',fe(mDelEF)+mpOf(mDelEF,mDelTotal));
+  sm('m-del-tips',fe(mDelTips)+mpOf(mDelTips,mDelTotal));
+  sm('m-del-ord',Math.round(mDelOrd)+'');
   sm('m-uber-total',fe(mUberTotal)+(mPlatTotal>0?' · '+mUberPct+'%':''));
-  sm('m-uber-of',fe(mUberOF));
-  sm('m-uber-tips',fe(mUberTips));sm('m-uber-ord',Math.round(mUberOrd)+'');
+  sm('m-uber-of',fe(mUberOF)+mpOf(mUberOF,mUberTotal));
+  sm('m-uber-tips',fe(mUberTips)+mpOf(mUberTips,mUberTotal));
+  sm('m-uber-ord',Math.round(mUberOrd)+'');
 
   // Descontos e líquido
   renderDeducts('m-deducts',mBike,mRentDel,mRentUber,mCashTips,mLiq,null);
@@ -2412,6 +2450,8 @@ function renderHistorico(){
   const totalLiq=gW.reduce((s,w)=>s+w.liquido,0);
   totalH=gW.reduce((s,w)=>s+(w.horas>0?w.horas:0),0);
   totalOrd=gW.reduce((s,w)=>s+(w.orders>0?w.orders:0),0);
+  const hiDelOrd=gRaw.filter(r=>r.worked).reduce((s,r)=>s+nn(r.delOrd),0);
+  const hiUberOrd=gRaw.filter(r=>r.worked).reduce((s,r)=>s+nn(r.uberOrd),0);
   // Km: só semanas com km preenchido
   const wWithKm=gW.filter(w=>!isNaN(w.km)&&w.km>0);
   const totalKm=wWithKm.reduce((s,w)=>s+w.km,0);
@@ -2470,7 +2510,15 @@ function renderHistorico(){
   if(totalH>0) addKitemSub(document.getElementById('hi-h'),'total: '+totalH.toFixed(0)+'h');
   setHi('hi-mp',histMp,v=>isNaN(v)?'—':v.toFixed(1)+' min');
   setHi('hi-ord',hiOrdAvg,v=>isNaN(v)||v===0?'—':v.toFixed(1)+'/dia');
-  if(totalOrd>0) addKitemSub(document.getElementById('hi-ord'),'total: '+Math.round(totalOrd)+' ped');
+  if(totalOrd>0){
+    addKitemSub(document.getElementById('hi-ord'),'total: '+Math.round(totalOrd)+' ped');
+    if(hiDelOrd>0||hiUberOrd>0){
+      const subEl2=document.createElement('div');
+      subEl2.style.cssText='font-size:10px;color:var(--text3);margin-top:2px;font-family:var(--mono)';
+      subEl2.textContent=`Del: ${Math.round(hiDelOrd)} · Uber: ${Math.round(hiUberOrd)}`;
+      document.getElementById('hi-ord').parentElement.appendChild(subEl2);
+    }
+  }
   setHi('hi-sem',totalDias,v=>v+'');
   if(!isNaN(avgDiasSem)) addKitemSub(document.getElementById('hi-sem'),avgDiasSem.toFixed(1)+' dias/sem em média');
   const bestEl=document.getElementById('hi-best');
@@ -2657,8 +2705,7 @@ function renderHistorico(){
   const hiCashTips=gRaw.filter(r=>r.worked).reduce((s,r)=>s+nn(r.tipscash),0);
   const hiDelTotal=gRaw.filter(r=>r.worked).reduce((s,r)=>s+nn(r.delTotal),0);
   const hiUberTotal=gRaw.filter(r=>r.worked).reduce((s,r)=>s+nn(r.uberTotal),0);
-  const hiDelOrd=gRaw.filter(r=>r.worked).reduce((s,r)=>s+nn(r.delOrd),0);
-  const hiUberOrd=gRaw.filter(r=>r.worked).reduce((s,r)=>s+nn(r.uberOrd),0);
+  // hiDelOrd, hiUberOrd já definidos no início de renderHistorico
   const hiBike=gRaw.filter(r=>r.worked).reduce((s,r)=>s+nn(r.bike),0);
   const hiRentDel=gRaw.filter(r=>r.worked).reduce((s,r)=>s+nn(r.rentDel),0);
   const hiRentUber=gRaw.filter(r=>r.worked).reduce((s,r)=>s+nn(r.rentUber),0);
@@ -2671,19 +2718,34 @@ function renderHistorico(){
     {lbl:'Uber tips',val:hiUberTips,color:C.greenUber2},
     {lbl:'Tips cash',val:hiCashTips,color:GRAY_MED},
   ].filter(p=>p.val>0);
-  if(totalRec>0) renderComposeDonut('hi-compose','hi-compose-legend','hi-compose-center',hiParts,totalRec);
+  const hiGroups=[
+    {name:'Deliveroo',color:C.blueDel1,total:hiDelOF+hiDelEF+hiDelTips,subs:[
+      {lbl:'Order fee',val:hiDelOF,  color:C.blueDel1},
+      {lbl:'Extra fee',val:hiDelEF,  color:C.blueDel2},
+      {lbl:'Tips app', val:hiDelTips,color:C.blueDel3},
+    ]},
+    {name:'Uber Eats',color:C.greenUber1,total:hiUberOF+hiUberTips,subs:[
+      {lbl:'Order fee',val:hiUberOF,  color:C.greenUber1},
+      {lbl:'Tips app', val:hiUberTips,color:C.greenUber2},
+    ]},
+  ];
+  if(totalRec>0) renderComposeDonut('hi-compose','hi-compose-legend','hi-compose-center',hiParts,totalRec,hiGroups,[{lbl:'Tips cash',val:hiCashTips,color:GRAY_MED}]);
 
   // Breakdown plataformas
   const sh=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
   const hiPlatTotal=hiDelTotal+hiUberTotal;
   const hiDelPct=hiPlatTotal>0?(hiDelTotal/hiPlatTotal*100).toFixed(0):'—';
   const hiUberPct=hiPlatTotal>0?(hiUberTotal/hiPlatTotal*100).toFixed(0):'—';
+  const hpOf=(v,base)=>base>0?' · '+(v/base*100).toFixed(0)+'%':'';
   sh('hi-del-total',fe(hiDelTotal)+(hiPlatTotal>0?' · '+hiDelPct+'%':''));
-  sh('hi-del-of',fe(hiDelOF));sh('hi-del-ef',fe(hiDelEF));
-  sh('hi-del-tips',fe(hiDelTips));sh('hi-del-ord',Math.round(hiDelOrd)+'');
+  sh('hi-del-of',fe(hiDelOF)+hpOf(hiDelOF,hiDelTotal));
+  sh('hi-del-ef',fe(hiDelEF)+hpOf(hiDelEF,hiDelTotal));
+  sh('hi-del-tips',fe(hiDelTips)+hpOf(hiDelTips,hiDelTotal));
+  sh('hi-del-ord',Math.round(hiDelOrd)+'');
   sh('hi-uber-total',fe(hiUberTotal)+(hiPlatTotal>0?' · '+hiUberPct+'%':''));
-  sh('hi-uber-of',fe(hiUberOF));
-  sh('hi-uber-tips',fe(hiUberTips));sh('hi-uber-ord',Math.round(hiUberOrd)+'');
+  sh('hi-uber-of',fe(hiUberOF)+hpOf(hiUberOF,hiUberTotal));
+  sh('hi-uber-tips',fe(hiUberTips)+hpOf(hiUberTips,hiUberTotal));
+  sh('hi-uber-ord',Math.round(hiUberOrd)+'');
 
   // Descontos histórico
   renderDeducts('hi-deducts',hiBike,hiRentDel,hiRentUber,hiCashTips,totalLiq,null);
@@ -2917,6 +2979,19 @@ window.addEventListener('load',function(){
     document.getElementById('ls').classList.add('h');
     showErr('diario','Erro ao inicializar o dashboard.');
   }
+});
+
+// Re-renderiza aba ativa ao rotacionar tela (resolve gráficos espremidos no mobile)
+window.addEventListener('resize',function(){
+  const activeView=document.querySelector('.view.on');
+  if(!activeView||!gW.length) return;
+  const id=activeView.id.replace('view-','');
+  requestAnimationFrame(()=>{
+    if(id==='semana') renderSemana();
+    else if(id==='mes') renderMes();
+    else if(id==='hist') renderHistorico();
+    else if(id==='diario') renderDiario();
+  });
 });
 </script>
 </body>
